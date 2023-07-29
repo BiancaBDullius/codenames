@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
+const Word = require('./Word.js');
 
 const cardSchema = new mongoose.Schema({
     word: {
-        type:String,
-        required: true,
+        type: Word.schema,
+        required: true
     },
     turned: {
         type: Boolean,
