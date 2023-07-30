@@ -10,8 +10,8 @@ app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
 
-const indexRoute = require("./routes/index-route");
+const routes = require("./routes.js");
 
-app.use("/", indexRoute);
+app.use(routes);
 
 module.exports = app;
