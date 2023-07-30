@@ -3,12 +3,12 @@ const Word = require('./Word.js');
 
 const cardSchema = new mongoose.Schema({
     word: {
-        type: Word.schema,
+        type: String,
         required: true
     },
     turned: {
         type: Boolean,
-        required: true,
+        required: true
     },
     position: {
         type: Number,
