@@ -70,5 +70,20 @@ const randomTeam = (countTeam0, countTeam1, countTeam2) => {
   return randomNumbers;
 }
 
+let messages = {
+  ptBr:{
+    game: {
+      notFound: "Jogo não encontrado para essa sessão!",
+      found: "Jogo encontrado com sucesso!"
+    }
+  },
+  en:{
+    game: {
+      notFound: "Game not found for this session!",
+      found: "Game found successfully!"
+    }
+  } 
+}
 
-  module.exports = {randomNumbers, words, wordValues, randomTeam};
+
+  module.exports = {randomNumbers, words, wordValues, randomTeam,messages};

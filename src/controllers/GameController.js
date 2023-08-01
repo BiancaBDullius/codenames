@@ -2,9 +2,39 @@ require('dotenv').config();
 
 const ids = require('short-id');
 
+
 const Word = require('../models/Word.js');
 const Game = require('../models/Game.js');
-const {randomNumbers } = require("../utils");
+const {randomNumbers, messages } = require("../utils");
+
+let language = 'ptBr'
+
+async function getGame(req, res){
+  try {
+    let {session} = req.params;
+    let message = messages[language].game.found
+    
+    let game = await Game.findOne({session});
+
+    if(!game) message = messages[language].game.notFound
+
+    return res.status(201).send({
+      message,
+      session,
+      game_state: game ? game.game_state.map(item =>  ({word: item.word, turned: item.turned, position: item.position, team: item.team})) : [],
+      turn: game ? game.turn : undefined,
+      timer: game ? game.timer : undefined
+    });
+   
+  } catch (e) {
+    console.log(e)
+    return res.status(500).send({
+      message: "Falha ao processar sua requisição",
+      t:'Erro',
+      e
+    });
+  }
+}
 
 async function createGame(req, res){
     try {
@@ -55,8 +85,8 @@ async function createGame(req, res){
       }
 }
 
-// async function getGame(req, res){
+async function putGame(req, res){
 
-// }
+}
 
-module.exports = {createGame};
+module.exports = {createGame,getGame, putGame};
