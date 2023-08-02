@@ -1,13 +1,14 @@
 require('dotenv').config();
+const routes = require('express').Router();
+
 const {createGame,getGame, putGame} = require('./controllers/GameController');
 const {createWords} = require('./controllers/WordController');
 
-const routes = require('express').Router();
 
 // Game
-routes.get('/:session', getGame); 
-routes.post('/create-game', createGame);
-routes.put('/:session', putGame);
+routes.get('/game/:session', getGame); 
+routes.post('/game/create-game', createGame);
+routes.put('/game/:session', putGame);
 
 // Words
 routes.post('/create-words', createWords);

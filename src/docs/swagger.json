@@ -1,0 +1,252 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API do jogo Codenames",
+        "description": "Tem os endpoints pra criar o joguineo :)",
+        "contact": {
+            "email": "biancabepplerdullius@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "https://codenames-bd.adaptable.app",
+            "description": "API de produção"
+        },
+        {
+            "url": "https://localhost:5000",
+            "description": "API de teste"
+        }
+    ],
+    "paths": {
+        "/game/:session": {
+            "get": ""
+        },
+        "/game/create-game": {
+            "post": {
+                "summary": "Criar Jogo",
+                "description": "Rota responsável pela criação de uma novo jogo online.",
+                "tags": [
+                    "Game"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateGame"
+                            },
+                            "examples": {
+                                "Jogo de 25 Palavras": {
+                                    "value": {
+                                        "word_count": 25
+                                    }
+                                },
+                                "Jogo de 16 Palavras": {
+                                    "value": {
+                                        "word_count": 16
+                                    }
+                                },
+                                "Jogo de 9 Palavras": {
+                                    "value": {
+                                        "word_count": 9
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "500": {
+                        "description": "Falha ao processar sua requisição"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/CreateGameResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "CreateGame": {
+                "type": "object",
+                "properties": {
+                    "word_count": {
+                        "type": "number"
+                    }
+                }
+            },
+            "CreateGameResponse": {
+                "type": "object",
+                "properties": {
+                    "session": {
+                        "type": "string",
+                        ""
+                    },
+                    "game_state": [
+                        {
+                            "word": "Colher",
+                            "turned": false,
+                            "position": 1,
+                            "team": 0
+                        },
+                        {
+                            "word": "Escorrega",
+                            "turned": false,
+                            "position": 20,
+                            "team": 0
+                        },
+                        {
+                            "word": "Trem",
+                            "turned": false,
+                            "position": 12,
+                            "team": 0
+                        },
+                        {
+                            "word": "Garfo",
+                            "turned": false,
+                            "position": 4,
+                            "team": 0
+                        },
+                        {
+                            "word": "Pala",
+                            "turned": false,
+                            "position": 16,
+                            "team": 0
+                        },
+                        {
+                            "word": "Rua",
+                            "turned": false,
+                            "position": 15,
+                            "team": 0
+                        },
+                        {
+                            "word": "Banana",
+                            "turned": false,
+                            "position": 21,
+                            "team": 0
+                        },
+                        {
+                            "word": "Burro",
+                            "turned": false,
+                            "position": 18,
+                            "team": 0
+                        },
+                        {
+                            "word": "Limão",
+                            "turned": false,
+                            "position": 14,
+                            "team": 0
+                        },
+                        {
+                            "word": "Relógio",
+                            "turned": false,
+                            "position": 0,
+                            "team": 0
+                        },
+                        {
+                            "word": "Limão",
+                            "turned": false,
+                            "position": 23,
+                            "team": 0
+                        },
+                        {
+                            "word": "Pincel",
+                            "turned": false,
+                            "position": 3,
+                            "team": 0
+                        },
+                        {
+                            "word": "Folha",
+                            "turned": false,
+                            "position": 7,
+                            "team": 0
+                        },
+                        {
+                            "word": "Açúcar",
+                            "turned": false,
+                            "position": 2,
+                            "team": 0
+                        },
+                        {
+                            "word": "Girafa",
+                            "turned": false,
+                            "position": 22,
+                            "team": 0
+                        },
+                        {
+                            "word": "Pá",
+                            "turned": false,
+                            "position": 10,
+                            "team": 0
+                        },
+                        {
+                            "word": "Quilha",
+                            "turned": false,
+                            "position": 13,
+                            "team": 0
+                        },
+                        {
+                            "word": "Patins",
+                            "turned": false,
+                            "position": 19,
+                            "team": 0
+                        },
+                        {
+                            "word": "Fotografia",
+                            "turned": false,
+                            "position": 24,
+                            "team": 0
+                        },
+                        {
+                            "word": "Pijama",
+                            "turned": false,
+                            "position": 9,
+                            "team": 0
+                        },
+                        {
+                            "word": "Beija-flor",
+                            "turned": false,
+                            "position": 11,
+                            "team": 0
+                        },
+                        {
+                            "word": "Ferro",
+                            "turned": false,
+                            "position": 6,
+                            "team": 0
+                        },
+                        {
+                            "word": "Música",
+                            "turned": false,
+                            "position": 17,
+                            "team": 0
+                        },
+                        {
+                            "word": "Escada",
+                            "turned": false,
+                            "position": 5,
+                            "team": 0
+                        },
+                        {
+                            "word": "Cesto",
+                            "turned": false,
+                            "position": 8,
+                            "team": 0
+                        }
+                    ],
+                    "turn": 0,
+                    "timer": "2023-08-02T00:43:57.679Z"
+                }
+            }
+        }
+    }
+}
