@@ -47,20 +47,24 @@ const io = new Server(server, { cors: { origin: '*' } });
 const onlinePlayers = new Map();
 
 io.on('connection', (socket) => {
+  console.log("---------- IO CONNECTION --------")
   global.gameSocket = socket;
   
   socket.on("add-player", (session) => {
+    console.log("---------- EVENDO CONNECT DISPARADO --------")
     onlinePlayers.set({id: autoincrement(), session}, socket.id);
   });
-
-  socket.on('delete-player', () => {
-    const playerId = getPlayerIdBySocketId(socket.id);
-    if (playerId) {
-      onlinePlayers.delete(playerId);
-    }
+  
+  socket.on('disconnect', () => {
+    console.log("---------- EVENDO DISCONNECT DISPARADO --------")
+    // const playerId = getPlayerIdBySocketId(socket.id);
+    // if (playerId) {
+    //   onlinePlayers.delete(playerId);
+    // }
   });
 
   socket.on('change-game', (session) => {
+    console.log("---------- EVENDO CHANGE-GAME DISPARADO --------")
     onlinePlayers.forEach((socketId, playerData) => {
       if (playerData.session === session) {
        
