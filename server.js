@@ -42,7 +42,7 @@ function onListening() {
   console.log("Listening on " + bind);
 }
 
-const io = new Server(server);
+const io = new Server(server,{ origins: '*:*'});
 
 const onlinePlayers = new Map();
 
