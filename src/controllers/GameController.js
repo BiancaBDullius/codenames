@@ -79,8 +79,6 @@ async function createGame(req, res){
       } catch (e) {
         return res.status(500).send({
           message: "Falha ao processar sua requisição",
-          t:'erro',
-          e
         });
       }
 }
