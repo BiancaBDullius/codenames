@@ -53,7 +53,7 @@ io.on('connection', (socket) => {
     onlinePlayers.set({id: autoincrement(), session}, socket.id);
   });
 
-  socket.on('disconnect', () => {
+  socket.on('delete-player', () => {
     const playerId = getPlayerIdBySocketId(socket.id);
     if (playerId) {
       onlinePlayers.delete(playerId);
