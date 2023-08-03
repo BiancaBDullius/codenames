@@ -5,7 +5,7 @@ const ids = require('short-id');
 
 const Word = require('../models/Word.js');
 const Game = require('../models/Game.js');
-const {randomNumbers, messages } = require("../utils");
+const {randomNumbers, messages, calculateTimer } = require("../utils");
 
 let language = 'ptBr'
 
@@ -22,8 +22,8 @@ async function getGame(req, res){
       message,
       session,
       game_state: game ? game.game_state.map(item =>  ({word: item.word, turned: item.turned, position: item.position, team: item.team})) : [],
-      turn: game ? game.turn : undefined,
-      timer: game ? game.timer : undefined
+      turn: game ? game.turn : "",
+      timer: calculateTimer(game.timer)
     });
    
   } catch (e) {
@@ -65,7 +65,7 @@ async function createGame(req, res){
         const response = await Game.create({
           session,
           game_state,
-          turn: 0,
+          turn: 'pink',
           timer: Date.now()
         })
     
@@ -73,7 +73,7 @@ async function createGame(req, res){
           session: response.session,
           game_state: response.game_state.map(item =>  ({word: item.word, turned: item.turned, position: item.position, team: item.team})),
           turn: response.turn,
-          timer: response.timer
+          timer: calculateTimer()
         });
        
       } catch (e) {
@@ -84,7 +84,42 @@ async function createGame(req, res){
 }
 
 async function putGame(req, res){
+  try {
+    let {session} = req.params;
+    let {turn, game_state} = req.body;
+    let message = messages[language].game.altered
+    let timer;
 
+    let model = {
+      turn
+    };
+
+    const game = await Game.findOne({session});
+    
+    if(!game) message = messages[language].game.notFound
+
+    if(game.turn !== turn) {
+      model.timer = Date.now();
+      timer = calculateTimer(model.timer);
+    } else{
+      timer = calculateTimer(game.timer)
+    }
+
+    if(game_state && game_state.length !== 0) model.game_state = game_state;
+    
+    await Game.updateOne({session}, model)
+
+    return res.status(201).send({
+      message,
+      timer
+    });
+   
+  } catch (e) {
+    console.log(e)
+    return res.status(500).send({
+      message: "Falha ao processar sua requisição",
+    });
+  }
 }
 
 module.exports = {createGame,getGame, putGame};

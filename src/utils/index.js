@@ -74,16 +74,24 @@ let messages = {
   ptBr:{
     game: {
       notFound: "Jogo não encontrado para essa sessão!",
-      found: "Jogo encontrado com sucesso!"
+      found: "Jogo encontrado com sucesso!",
+      altered: "Jogo alterado com sucesso!"
     }
   },
   en:{
     game: {
       notFound: "Game not found for this session!",
-      found: "Game found successfully!"
+      found: "Game found successfully!",
+      altered: "Game altered successfully!"
     }
   } 
 }
 
+const calculateTimer = (previusDate) => {
+  if (!previusDate) return 240;
 
-  module.exports = {randomNumbers, words, wordValues, randomTeam,messages};
+  const result = 240 - ((Date.now() - previusDate) / 1000);
+  return result >= 0 ? Math.floor(result) : 0;
+};
+
+  module.exports = {randomNumbers, words, wordValues, randomTeam,messages,calculateTimer};

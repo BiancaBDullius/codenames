@@ -56,7 +56,8 @@ io.on('connection', (socket) => {
   });
   
   socket.on('disconnect', () => {
-    console.log("---------- EVENDO DISCONNECT DISPARADO --------")
+    console.log("---------- EVENDO DISCONNECT DISPARADO - Tentando reconectar --------")
+    socket.socket.reconnect();
     // const playerId = getPlayerIdBySocketId(socket.id);
     // if (playerId) {
     //   onlinePlayers.delete(playerId);

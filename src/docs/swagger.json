@@ -19,7 +19,7 @@
         }
     ],
     "paths": {
-        "/game/{session}": {
+        "/game/{session}/": {
             "get": {
                 "summary": "Buscar Jogo",
                 "description": "Rota responsável por buscar um jogo online.",
@@ -105,6 +105,51 @@
                     }
                 }
             }
+        },
+        "/game/{session}": {
+            "put": {
+                "summary": "Alterar Jogo",
+                "description": "Rota responsável por alterar o estado de jogo.",
+                "tags": [
+                    "Game"
+                ],
+                "parameters": [
+                    {
+                        "name": "session",
+                        "in": "path",
+                        "description": "Sessão do jogador",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PutGame"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "500": {
+                        "description": "Falha ao processar sua requisição"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/PutGameResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -114,6 +159,34 @@
                 "properties": {
                     "word_count": {
                         "type": "number"
+                    }
+                }
+            },
+            "PutGame": {
+                "type": "object",
+                "properties": {
+                    "turn": {
+                        "type": "string"
+                    },
+                    "game_state": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "word": {
+                                    "type": "string"
+                                },
+                                "team": {
+                                    "type": "string"
+                                },
+                                "turned": {
+                                    "type": "boolean"
+                                },
+                                "position": {
+                                    "type": "number"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -132,7 +205,7 @@
                                     "type": "string"
                                 },
                                 "team": {
-                                    "type": "number"
+                                    "type": "string"
                                 },
                                 "turned": {
                                     "type": "boolean"
@@ -144,7 +217,18 @@
                         }
                     },
                     "turn": {
-                        "type": "number"
+                        "type": "string"
+                    },
+                    "timer": {
+                        "type": "string"
+                    }
+                }
+            },
+            "PutGameResponse": {
+                "type": "object",
+                "properties": {
+                    "turn": {
+                        "type": "string"
                     },
                     "timer": {
                         "type": "string"

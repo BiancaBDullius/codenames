@@ -15,7 +15,7 @@ const cardSchema = new mongoose.Schema({
         required: true
     },
     team: {
-        type: Number,
+        type: String,
         required: true
     }
 })
@@ -30,7 +30,7 @@ const gameSchema = new mongoose.Schema({
         required:true
     },
     turn: {
-        type: Number,
+        type: String,
         required: true
     },
     timer: {
