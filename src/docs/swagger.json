@@ -227,7 +227,7 @@
             "PutGameResponse": {
                 "type": "object",
                 "properties": {
-                    "turn": {
+                    "message": {
                         "type": "string"
                     },
                     "timer": {
