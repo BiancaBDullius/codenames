@@ -12,7 +12,14 @@ const server = http.createServer(app);
 
 connectDatabase.then(r => {
 
-  const io = new Server(server, { cors: { origin: '*' } });
+  const io = new Server(server, {
+    pingInterval: 24 * 60 * 60 * 1000,
+    pingTimeout: 3 * 24 * 60 * 60 * 1000,
+    cors: {
+        origin: '*',
+        methods: ['GET', 'POST']
+    }
+});
 
 const onlinePlayers = new Map();
 
