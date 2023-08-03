@@ -11,6 +11,35 @@ app.set("port", port);
 const server = http.createServer(app);
 
 connectDatabase.then(r => {
+
+  const io = new Server(server, { cors: { origin: '*' } });
+
+const onlinePlayers = new Map();
+
+io.on('connection', (socket) => {
+  global.gameSocket = socket;
+  
+  socket.on("add-player", (session) => {
+    onlinePlayers.set({id: autoincrement(), session}, socket.id);
+  });
+  
+  socket.on('disconnect', (disconnected) => {
+    console.log('Return of disconnection ------> ', disconnected)
+    // const playerId = getPlayerIdBySocketId(socket.id);
+    // if (playerId) {
+    //   onlinePlayers.delete(playerId);
+    // }
+  });
+
+  socket.on('change-game', (session) => {
+    onlinePlayers.forEach((socketId, playerData) => {
+      if (playerData.session === session) {
+       
+        io.to(socketId).emit("get-game", { message: 'get-game' });
+      }
+    });
+  });
+});
 server.listen(port);
 server.on("error", onError);
 server.on("listening", onListening);
@@ -42,34 +71,7 @@ function onListening() {
   console.log("Listening on " + bind);
 }
 
-const io = new Server(server, { cors: { origin: '*' } });
 
-const onlinePlayers = new Map();
-
-io.on('connection', (socket) => {
-  global.gameSocket = socket;
-  
-  socket.on("add-player", (session) => {
-    onlinePlayers.set({id: autoincrement(), session}, socket.id);
-  });
-  
-  socket.on('disconnect', (disconnected,a) => {
-    console.log('Return of disconnection ------> ', disconnected)
-    // const playerId = getPlayerIdBySocketId(socket.id);
-    // if (playerId) {
-    //   onlinePlayers.delete(playerId);
-    // }
-  });
-
-  socket.on('change-game', (session) => {
-    onlinePlayers.forEach((socketId, playerData) => {
-      if (playerData.session === session) {
-       
-        io.to(socketId).emit("change-game", { message: 'get-game' });
-      }
-    });
-  });
-});
 global.ids = 0;
 // Helper function to get playerId by socketId from the onlinePlayers Map
 function autoincrement() {
