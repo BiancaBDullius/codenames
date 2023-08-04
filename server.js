@@ -1,6 +1,6 @@
 "use strict";
 const http = require("http");
-const { Server } = require("socket.io");
+const ioSocket = require("socket.io");
 
 const app = require("./src/app");
 const connectDatabase = require('./src/database/index.js');
@@ -12,7 +12,7 @@ const server = http.createServer(app);
 
 connectDatabase.then(r => {
 
-  const io = new Server(server, {
+  const io =  ioSocket(server, {
     pingInterval: 24 * 60 * 60 * 1000,
     pingTimeout: 3 * 24 * 60 * 60 * 1000,
     cors: {
