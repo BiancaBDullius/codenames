@@ -2,4 +2,5 @@
 .dist
 .env
 
+guess-the-word.pem
 package-lock.json
