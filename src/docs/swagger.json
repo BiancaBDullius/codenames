@@ -150,6 +150,76 @@
                     }
                 }
             }
+        },
+        "/hints/create/{session}": {
+            "post": {
+                "summary": "Criar dica.",
+                "description": "Rota responsável por criar a dica para um time.",
+                "tags": [
+                    "Hint"
+                ],
+                "parameters": [
+                    {
+                        "name": "session",
+                        "in": "path",
+                        "description": "Sessão do jogador",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateHint"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "500": {
+                        "description": "Falha ao processar sua requisição"
+                    }
+                }
+            }
+        },
+        "/hints/{session}": {
+            "get": {
+                "summary": "Busca dicas da sessão.",
+                "description": "Rota responsável por buscas as dicas criadas para uma sessão.",
+                "tags": [
+                    "Hint"
+                ],
+                "parameters": [
+                    {
+                        "name": "session",
+                        "in": "path",
+                        "description": "Sessão do jogador",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "500": {
+                        "description": "Falha ao processar sua requisição"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/getHintsResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -159,6 +229,17 @@
                 "properties": {
                     "word_count": {
                         "type": "number"
+                    }
+                }
+            },
+            "CreateHint": {
+                "type": "object",
+                "properties": {
+                    "text": {
+                        "type": "string"
+                    },
+                    "team": {
+                        "type": "string"
                     }
                 }
             },
@@ -216,6 +297,12 @@
                             }
                         }
                     },
+                    "rest_pink": {
+                        "type": "number"
+                    },
+                    "rest_blue": {
+                        "type": "number"
+                    },
                     "turn": {
                         "type": "string"
                     },
@@ -232,6 +319,28 @@
                     },
                     "timer": {
                         "type": "string"
+                    }
+                }
+            },
+            "getHintsResponse": {
+                "type": "object",
+                "properties": {
+                    "hints": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "session": {
+                                    "type": "string"
+                                },
+                                "team": {
+                                    "type": "string"
+                                },
+                                "text": {
+                                    "type": "string"
+                                }
+                            }
+                        }
                     }
                 }
             }

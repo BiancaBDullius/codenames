@@ -25,17 +25,17 @@ const onlinePlayers = new Map();
 
 io.on('connection', (socket) => {
   global.gameSocket = socket;
-  
+ 
   socket.on("add-player", (session) => {
     onlinePlayers.set({id: autoincrement(), session}, socket.id);
   });
-  
+ 
   socket.on('disconnect', (disconnected) => {
     console.log('Return of disconnection ------> ', disconnected)
-    // const playerId = getPlayerIdBySocketId(socket.id);
-    // if (playerId) {
-    //   onlinePlayers.delete(playerId);
-    // }
+     const playerId = getPlayerIdBySocketId(socket.id);
+     if (playerId) {
+       onlinePlayers.delete(playerId);
+     }
   });
 
   socket.on('change-game', (session) => {
@@ -46,7 +46,17 @@ io.on('connection', (socket) => {
       }
     });
   });
+
+  socket.on('add-hint', (session) => {
+    onlinePlayers.forEach((socketId, playerData) => {
+      if (playerData.session === session) {
+       
+        io.to(socketId).emit("get-hints", { message: 'get-hints' });
+      }
+    });
+  });
 });
+
 server.listen(port);
 server.on("error", onError);
 server.on("listening", onListening);

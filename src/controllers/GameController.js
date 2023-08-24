@@ -13,16 +13,23 @@ async function getGame(req, res){
   try {
     let {session} = req.params;
     let message = messages[language].game.found
-    
+    let restPink=0, restBlue=0;
     let game = await Game.findOne({session});
 
     if(!game) message = messages[language].game.notFound
+
+    game.game_state.map(item => {
+      if(item.team === "pink" && !item.turned) restPink++;
+      if(item.team === "blue" && !item.turned) restBlue++;
+    })
 
     return res.status(201).send({
       message,
       session,
       game_state: game ? game.game_state.map(item =>  ({word: item.word, turned: item.turned, position: item.position, team: item.team})) : [],
       turn: game ? game.turn : "",
+      rest_pink:restPink,
+      rest_blue:restBlue,
       timer: calculateTimer(game.timer)
     });
    
@@ -54,18 +61,24 @@ async function createGame(req, res){
         positions = randomNumbers(word_count, word_count);
     
         for(let i=0;i<registeredWords.length;i++){
+          let team = "pink";
+
+          if(i >= 9) team = "blue"
+          if(i >= 17) team = "white"
+          if(i === 24) team = "black"
+          
           game_state.push({
             word:  registeredWords[positions[i]].name, 
             position: positions[i], 
             turned: false,
-            team: 0
+            team
           });
         }
     
         const response = await Game.create({
           session,
           game_state,
-          turn: 'pink',
+          turn: "pink",
           timer: Date.now()
         })
     
