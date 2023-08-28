@@ -5,7 +5,7 @@ const ids = require('short-id');
 
 const Word = require('../models/Word.js');
 const Game = require('../models/Game.js');
-const {randomNumbers, messages, calculateTimer } = require("../utils");
+const {randomNumbers, messages, calculateTimer, shuffleArray } = require("../utils");
 
 let language = 'ptBr'
 
@@ -26,7 +26,7 @@ async function getGame(req, res){
     return res.status(201).send({
       message,
       session,
-      game_state: game ? game.game_state.map(item =>  ({word: item.word, turned: item.turned, position: item.position, team: item.team})) : [],
+      game_state: game ? game.game_state.map(item =>  ({word: item.word, turned: item.turned, team: item.team})) : [],
       turn: game ? game.turn : "",
       rest_pink:restPink,
       rest_blue:restBlue,
@@ -69,11 +69,12 @@ async function createGame(req, res){
           
           game_state.push({
             word:  registeredWords[positions[i]].name, 
-            position: positions[i], 
             turned: false,
             team
           });
         }
+
+        game_state = shuffleArray(game_state);
     
         const response = await Game.create({
           session,
@@ -84,7 +85,7 @@ async function createGame(req, res){
     
         return res.status(201).send({
           session: response.session,
-          game_state: response.game_state.map(item =>  ({word: item.word, turned: item.turned, position: item.position, team: item.team})),
+          game_state: response.game_state.map(item =>  ({word: item.word, turned: item.turned, team: item.team})),
           turn: response.turn,
           timer: calculateTimer()
         });

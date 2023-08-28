@@ -10,10 +10,6 @@ const cardSchema = new mongoose.Schema({
         type: Boolean,
         required: true
     },
-    position: {
-        type: Number,
-        required: true
-    },
     team: {
         type: String,
         required: true
